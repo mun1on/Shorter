@@ -4,20 +4,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-public class MenuBar implements ActionListener/*, ItemListener*/
+public class MenuBar implements ActionListener
 {
-    private int intWebsite = 0;
-    private JFrame optionFrame;
+    private static JFrame optionFrame;
     private JPanel optionPanel;
     private JMenuBar menuBar;
     private JMenu file, options, addItem, editItem;
-    private JMenuItem quitItem, addWebsiteSubItem, addAppSubItem, editWebsiteSubItem, editAppSubItem;
+    private JMenuItem quitItem, addWebsiteSubItem;
 
-    public MenuBar()
+    MenuBar()
     {
-        getGUI(optionFrame);
+        setJFrame();
     }
 
     private void setJMenuItems()
@@ -25,13 +25,8 @@ public class MenuBar implements ActionListener/*, ItemListener*/
         // Tworzenie JMenuItem - Quit
         quitItem = new JMenuItem("Quit",KeyEvent.VK_Q);
         quitItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_Q, ActionEvent.ALT_MASK));
-        ActionListener quitItemActionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        };
+                KeyEvent.VK_Q, InputEvent.ALT_MASK));
+        ActionListener quitItemActionListener = e -> System.exit(0);
         quitItem.addActionListener(quitItemActionListener);
 
         // Tworzenie JMenuItem - Add
@@ -42,22 +37,14 @@ public class MenuBar implements ActionListener/*, ItemListener*/
 
         // Tworzenie JMenuSubItem - addWebsiteSubItem
         addWebsiteSubItem = new JMenuItem("new Website");
-        ActionListener addWebsiteSubItemActionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-//
-                intWebsite++;
-                if(optionPanel != null)
-                    optionPanel.removeAll();
-//                optionFrame.removeAll();
-//                optionFrame.setVisible(false);
+        ActionListener addWebsiteSubItemActionListener = e -> {
+            if(optionPanel != null)
+                optionPanel.removeAll();
 
-                optionPanel = new MenuPanel(intWebsite, optionFrame).getOptionPanel();
-                optionFrame.add(optionPanel);
-                //optionFrame.pack();
-                optionFrame.setVisible(true);
-
-            }
+            optionPanel = new MenuPanel(optionFrame).getOptionPanel();
+            optionFrame.add(optionPanel);
+            optionFrame.setVisible(true);
+            // SET VISIBLE TRUE?
         };
         addWebsiteSubItem.addActionListener(addWebsiteSubItemActionListener);
     }
@@ -104,32 +91,13 @@ public class MenuBar implements ActionListener/*, ItemListener*/
         optionFrame.setJMenuBar(menuBar);
         optionFrame.setSize(new Dimension(400,400));
         //optionFrame.pack();
-        optionFrame.setDefaultCloseOperation(JFrame.ICONIFIED);
+        optionFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         optionFrame.setLocationRelativeTo(null);
-        optionFrame.setVisible(true);
+        optionFrame.setVisible(false);
     }
 
-    /**
-     * GETTERY
-     */
-
-    public JFrame getGUI(JFrame menuBarFrame)
+    static JFrame getJFrameMenuBar()
     {
-        setJFrame();
-        return optionFrame;
-    }
-
-    public void setIntWebsite()
-    {
-        intWebsite++;
-    }
-
-    public int getIntWebsite()
-    {
-        return intWebsite;
-    }
-
-    public JFrame getOptionFrame() {
         return optionFrame;
     }
 

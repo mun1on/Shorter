@@ -1,5 +1,2 @@
-http://facebook.com
-
-http://youtube.com
 http://gmail.com
 
